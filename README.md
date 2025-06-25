@@ -26,4 +26,5 @@ Tech Stack:
 
 Ways I would possibly improve this tool for production:
 - Ability to add more than 2 players to compare.
+- Have more accurate domains for the radar chart, I did some guessing and quick look over the data to get those.
 - With `aggregated` data grouping, maybe a tabular view of each player's stats for each season given in the data set.
