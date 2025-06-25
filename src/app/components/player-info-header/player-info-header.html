@@ -1,0 +1,23 @@
+<div class="flex space-x-2">
+    @if (player().team && logoPlacement() === 'left') {
+    <img [src]="player().team | teamLogo" alt="player team logo" width="60px" />
+    }
+
+    <div class="flex flex-col">
+        <h4 class="mb-0 text-sm sm:text-base">{{ player().player_name }}</h4>
+        @if (player().season && player().team) {
+        <ul class="pipe-separator text-sm text-gray-400">
+            <li>{{ player().season }}</li>
+            <li>{{ player().team }}</li>
+        </ul>
+        } @else {
+        <span class="text-sm text-gray-400"
+            >{{ player().seasons.length }} season{{ player().seasons.length === 1 ? '' : 's'}}</span
+        >
+        }
+    </div>
+
+    @if (player().team &&logoPlacement() === 'right') {
+    <img [src]="player().team | teamLogo" alt="player team logo" width="60px" />
+    }
+</div>

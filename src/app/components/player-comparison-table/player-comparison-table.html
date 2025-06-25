@@ -1,0 +1,83 @@
+<div class="overflow-x-auto">
+    <table class="table">
+        <tbody>
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'scouting_grade' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'gp' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'toi', statCompareKey: 'toiSeconds' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'points' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'goals' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'assists' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'shots' }"
+            ></ng-template>
+
+            <ng-template
+                [ngTemplateOutlet]="statTableRowTemplate"
+                [ngTemplateOutletContext]="{ player1: player1(), player2: player2(), stat: 'shooting_percentage' }"
+            ></ng-template>
+        </tbody>
+    </table>
+</div>
+
+<ng-template
+    #statTableRowTemplate
+    let-player1="player1"
+    let-player2="player2"
+    let-stat="stat"
+    let-statCompareKey="statCompareKey"
+>
+    <tr>
+        <td class="flex items-center">
+            @if (player1[statCompareKey ?? stat] > player2[statCompareKey ?? stat]) {
+            <span class="material-icons pr-2 text-sm text-success">check_circle</span>
+            } @else if (player1[statCompareKey ?? stat] < player2[statCompareKey ?? stat]) {
+            <span class="material-icons pr-2 text-sm text-error">cancel</span>
+            } @else {
+            <span class="material-icons pr-2 text-sm">do_not_disturb_on</span>
+            }
+            <span>
+                @if (stat === 'scouting_grade' || stat === 'shooting_percentage') { {{ player1[stat] | statNumber: {
+                digits: 1, suffix: stat === 'shooting_percentage' ? '%' : '' } }} } @else { {{ player1[stat] ?? '-' }} }
+            </span>
+        </td>
+        <td class="whitespace-nowrap text-center font-bold">{{ statKeyLabelMap[stat] }}</td>
+        <td class="flex items-center justify-end">
+            <span>
+                @if (stat === 'scouting_grade' || stat === 'shooting_percentage') { {{ player2[stat] | statNumber: {
+                digits: 1, suffix: stat === 'shooting_percentage' ? '%' : '' } }} } @else { {{ player2[stat] ?? '-' }} }
+            </span>
+            @if (player1[statCompareKey ?? stat] < player2[statCompareKey ?? stat]) {
+            <span class="material-icons pl-2 text-sm text-success">check_circle</span>
+            } @else if (player1[statCompareKey ?? stat] > player2[statCompareKey ?? stat]) {
+            <span class="material-icons pl-2 text-sm text-error">cancel</span>
+            } @else {
+            <span class="material-icons pl-2 text-sm">do_not_disturb_on</span>
+            }
+        </td>
+    </tr>
+</ng-template>

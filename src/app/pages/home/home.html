@@ -1,0 +1,98 @@
+<div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+    <div class="order-1">
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">Player 1</span>
+            </div>
+
+            @let player1 = service.player1$ | async;
+            <select class="select select-bordered w-full max-w-xs" (change)="onPlayerChanged('player1', $event)">
+                <option [selected]="!player1" disabled>Select player</option>
+                @for (opt of service.selectedDataPlayerOptions$ | async; track opt.value) {
+                <option
+                    [value]="opt.value"
+                    [selected]="opt.value === player1?.id"
+                    [disabled]="opt.value === player2?.id"
+                >
+                    {{ opt.label }}
+                </option>
+                }
+            </select>
+        </label>
+    </div>
+
+    <div class="join order-last flex items-end justify-center sm:order-2">
+        @let dataGrouping = service.dataGrouping$ | async;
+        <input
+            class="btn join-item"
+            type="radio"
+            name="season"
+            aria-label="Season"
+            [checked]="dataGrouping === 'season'"
+            (click)="onDataGroupingChanged('season')"
+        />
+        <input
+            class="btn join-item"
+            type="radio"
+            name="aggregate"
+            aria-label="Aggregate"
+            [checked]="dataGrouping === 'aggregate'"
+            (click)="onDataGroupingChanged('aggregate')"
+        />
+    </div>
+    <div class="order-2 sm:order-3">
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">Player 2</span>
+            </div>
+
+            @let player2 = service.player2$ | async;
+            <select class="select select-bordered w-full max-w-xs" (change)="onPlayerChanged('player2', $event)">
+                <option [selected]="!player2" disabled>Select player</option>
+                @for (opt of service.selectedDataPlayerOptions$ | async; track opt.value) {
+                <option
+                    [value]="opt.value"
+                    [selected]="opt.value === player2?.id"
+                    [disabled]="opt.value === player1?.id"
+                >
+                    {{ opt.label }}
+                </option>
+                }
+            </select>
+        </label>
+    </div>
+</div>
+
+<div class="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+    @if (player1 && player2) { @defer (when isBrowser) {
+    <div class="card mx-auto w-full max-w-screen-sm border border-gray-200 bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title mb-0">Overview</h2>
+
+            <div class="flex justify-center">
+                <app-vega-chart
+                    [spec]="radarSpec"
+                    [data]="{table: service.radarSpecData$ | async}"
+                    [signals]="service.radarSpecSignals$ | async"
+                />
+            </div>
+        </div>
+    </div>
+    }
+
+    <div class="card mx-auto w-full max-w-screen-sm border border-gray-200 bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title mb-0">Breakdown</h2>
+
+            <div class="flex justify-between">
+                <app-player-info-header [player]="player1" logoPlacement="right" />
+                <app-player-info-header [player]="player2" logoPlacement="left" />
+            </div>
+
+            <app-player-comparison-table [player1]="player1" [player2]="player2" />
+        </div>
+    </div>
+    } @else {
+    <div class="p-4 text-center text-xl text-gray-400">Please select two players to compare</div>
+    }
+</div>
