@@ -80,7 +80,7 @@ export class HomeService {
                           assists: [0, 300],
                           points: [0, 500],
                           scouting_grade: [0, 10],
-                          shots: [0, 2000],
+                          shots: [0, 2800],
                       },
         })),
         shareReplay(1),
