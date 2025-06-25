@@ -1,6 +1,10 @@
 # Penguins Interview Project
 ### Created By Austin Lukaschewski
 
+## How to start
+from the command line, run `pnpm run start`
+You can also use `npx nx serve` or `nx serve`
+
 ## Description
 I took the CSV and converted it into a JSON object to serve to my application.
 
