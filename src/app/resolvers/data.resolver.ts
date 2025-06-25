@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 
-import { chain, forEach, pick } from 'lodash';
+import { chain, forEach } from 'lodash';
 import { map } from 'rxjs';
 
 import type { PlayerSeasonData } from '../types/player-data';

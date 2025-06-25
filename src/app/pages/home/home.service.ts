@@ -39,19 +39,13 @@ export class HomeService {
     readonly selectedDataPlayerOptions$ = this.selectedData$.pipe(
         map((data) =>
             chain(data)
-                .reduce((acc: Array<SelectOption<number>>, player) => {
-                    let label = `${player.player_name}`;
-
-                    if (isNumber(player.season)) label = `${label} | ${player.season} ${player.team}`;
-
-                    acc.push({
-                        label,
-                        value: player.id,
-                        selected: false,
-                    });
-
-                    return acc;
-                }, [])
+                .map((player) => ({
+                    label: isNumber(player.season)
+                        ? `${player.player_name} | ${player.season} ${player.team}`
+                        : player.player_name,
+                    value: player.id,
+                    selected: false,
+                }))
                 .orderBy(['label'], ['asc'])
                 .valueOf(),
         ),
